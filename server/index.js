@@ -3,6 +3,7 @@ import { validationResult } from "express-validator";
 import express from 'express'
 import jwt from 'jsonwebtoken'
 import bcript from 'bcrypt'
+import cors from 'cors'
 
 import Users from './data/Users.json' assert { type: "json" }
 import { regValidation } from './validations/auth.js'
@@ -10,6 +11,16 @@ import { regValidation } from './validations/auth.js'
 
 const app = express()
 app.use(express.json()) // разрешается отправлять данные в формате json на сервер
+app.use(cors())
+
+
+app.get('/', (req, res) => {
+    res.send('Hello')
+})
+
+app.get('/getData', (req, res) => {
+    res.json(Users)
+})
 
 app.post('/reg', regValidation, async (req, res) => {
 
@@ -29,7 +40,7 @@ app.post('/reg', regValidation, async (req, res) => {
         fullName: req.body.fullName
     }
     Users.push(user)
-    console.log(Users);
+
     await fs.writeFile('./data/Users.json', JSON.stringify(Users), err => {
         console.log(err);
     })
