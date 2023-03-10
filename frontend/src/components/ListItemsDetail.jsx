@@ -14,6 +14,20 @@ import { Grid } from "@mui/material"
 import axios from "axios"
 
 export const CardItem = ({ ip, deviceName, isOnline, loginsToSystem, id }) => {
+    const [countSeconds, setCountSeconds] = React.useState(0)
+
+    React.useEffect(() => {
+        const intervalId = setInterval(() => {
+            setCountSeconds((prev) => {
+                if (prev >= 9) {
+                    return 0
+                } else {
+                    return ++prev
+                }
+            })
+        }, 1000)
+        return () => clearInterval(intervalId)
+    }, [])
     return (
         <React.Fragment>
             <CardContent>
@@ -58,7 +72,7 @@ export const CardItem = ({ ip, deviceName, isOnline, loginsToSystem, id }) => {
                         component="p"
                         sx={{ marginTop: "5px" }}
                     >
-                        2:40
+                        {countSeconds}
                     </Typography>
                 </Typography>
             </CardContent>
