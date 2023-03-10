@@ -14,6 +14,8 @@ import ChevronLeftIcon from "@mui/icons-material/ChevronLeft"
 import ChevronRightIcon from "@mui/icons-material/ChevronRight"
 import ListItemNav from "./components/ListItemNav"
 import ListItemsDetail from "./components/ListItemsDetail"
+import axios from "./axios"
+import { useBeforeunload } from "react-beforeunload"
 
 const drawerWidth = 240
 
@@ -83,6 +85,9 @@ const Drawer = styled(MuiDrawer, {
 }))
 
 export default function App() {
+    // React.useEffect(() => {
+    //     axios.get("/getData").then((res) => console.log(res))
+    // }, [])
     const theme = useTheme()
     const [open, setOpen] = React.useState(false)
 
