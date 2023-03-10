@@ -73,6 +73,7 @@ export default function ListItemsDetail() {
     const [isDialogOpen, setIsDialogOpen] = React.useState(false)
     const [devices, setDevices] = React.useState([])
     const [ipAddr, setIpAddr] = React.useState("")
+    const [ipStatus, setIpStatus] = React.useState()
 
     React.useEffect(() => {
         axios
@@ -81,11 +82,14 @@ export default function ListItemsDetail() {
             )
             .then((response) => {
                 setIpAddr(response.data.ip_address)
+                setIpStatus(response)
+
                 axios
                     .get(
                         "https://640b698581d8a32198e397c3.mockapi.io/api/get_users_data/users"
                     )
                     .then((data) => {
+                        setDevices(data.data)
                         const currUser = data.data.find(
                             (user) => user.ip === response.data.ip_address
                         )
@@ -127,6 +131,7 @@ export default function ListItemsDetail() {
 
     const preventUnload = React.useCallback(
         (event) => {
+            console.log("qqq")
             const currDevice = devices.find((device) => device.ip === ipAddr)
             currDevice.isOnline = false
             currDevice.loginsToSystem.push({
@@ -154,7 +159,7 @@ export default function ListItemsDetail() {
     }, [devices, ipAddr])
 
     React.useEffect(() => {
-        return setInterval(
+        setInterval(
             () =>
                 axios
                     .get(
@@ -207,7 +212,12 @@ export default function ListItemsDetail() {
             )}
 
             {isDialogOpen && (
-                <DialogItem open={isDialogOpen} setOpen={setIsDialogOpen} />
+                <DialogItem
+                    open={isDialogOpen}
+                    setOpen={setIsDialogOpen}
+                    ipStatus={ipStatus.data}
+                    devices={devices}
+                />
             )}
         </div>
     )

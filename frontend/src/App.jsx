@@ -16,6 +16,8 @@ import ListItemNav from "./components/ListItemNav"
 import ListItemsDetail from "./components/ListItemsDetail"
 import axios from "./axios"
 import { useBeforeunload } from "react-beforeunload"
+import { Link, Route, Routes } from "react-router-dom"
+import About from "./components/About"
 
 const drawerWidth = 240
 
@@ -85,11 +87,10 @@ const Drawer = styled(MuiDrawer, {
 }))
 
 export default function App() {
-    // React.useEffect(() => {
-    //     axios.get("/getData").then((res) => console.log(res))
-    // }, [])
     const theme = useTheme()
     const [open, setOpen] = React.useState(false)
+    const [homePage, setHomePage] = React.useState(true)
+    console.log(open)
 
     const handleDrawerOpen = () => {
         setOpen(true)
@@ -132,17 +133,20 @@ export default function App() {
                     </IconButton>
                 </DrawerHeader>
                 <Divider />
-                <List>
-                    <ListItemNav
-                        items={["Главная", "О приложении"]}
-                        open={open}
-                    />
-                </List>
+                <div onClick={() => setHomePage(true)}>
+                    <List>
+                        <ListItemNav items={["Главная"]} open={open} />
+                    </List>
+                </div>
+                <div onClick={() => setHomePage(false)}>
+                    <List>
+                        <ListItemNav items={["О приложении"]} open={open} />
+                    </List>
+                </div>
             </Drawer>
             <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
                 <DrawerHeader />
-                {/* <Typography paragraph></Typography> */}
-                <ListItemsDetail />
+                {homePage ? <ListItemsDetail /> : <About />}
             </Box>
         </Box>
     )
